@@ -11,6 +11,17 @@ class Save:
     def __init__(self, text):
         self.text = text
 
+    def get_save_attribute(self, attribute):
+        result = re.search(f"{attribute}=(.+)\n",self.text).groups()[0]
+        result = result.replace("\"","")
+        return result        
+
+    def get_save_name(self):
+        return self.get_save_attribute("name")
+    
+    def get_save_date(self):
+        return self.get_save_attribute("date")
+
     def get_starts(self, re_template, start=0, end=-1):
         if(end<=0):
             end = len(self.text)

@@ -1,6 +1,8 @@
 import re
 from Planet import Planet
 from System import System
+import os
+import shutil
 
 class Mod:
 
@@ -41,8 +43,14 @@ class Mod:
     
     """
 
-    def __init__(self, systems : list[System]):
+    def __init__(self, documents_path : str, save_name : str , systems : list[System]):
+        self.mods_path = os.path.join(documents_path,"mod")
+        self.mod_name = "Converted - "+save_name
         self.systems = systems
+
+        self.mod_folder_name = save_name.replace(" ","_").lower()
+        self.mod_folder = os.path.join("output",self.mod_folder_name)
+       
     
     def get_planet_initalizer_body(self, planet : Planet):
         planet_string = """ = {{"""
@@ -72,12 +80,21 @@ class Mod:
                 result += planet_string
         return result
 
+    def create_path_if_doesnt_exist(self, path):
+        if(not os.path.exists(path)):
+            os.makedirs(path)     
+
     def write_initializers(self):
-        with open("out\common\solar_system_initializers\init_initializers.txt","w",encoding="utf-8") as file:
+        initializers_folder_path = os.path.join(self.mod_folder,"common\solar_system_initializers")
+        initializers_path = os.path.join(initializers_folder_path,"init_initializers.txt")
+
+        self.create_path_if_doesnt_exist(initializers_folder_path)
+
+        with open(initializers_path,"w",encoding="utf-8") as file:
             file.write(self.system_file_start)
         for system in self.systems:
             init = self.get_system_initializer(system)
-            with open("out\common\solar_system_initializers\init_initializers.txt","a",encoding="utf-8") as file:
+            with open(initializers_path,"a",encoding="utf-8") as file:
                 file.write(init)
                 file.write("}")
     
@@ -92,12 +109,48 @@ class Mod:
                 result += f"add_hyperlane = {{ from = \"{system.id}\" to = \"{connection}\" }}\n"
 
         result += "}"
-        with open("out\map\setup_scenarios\mega.txt","w",encoding="utf-8") as file:
+        map_folder_path = os.path.join(self.mod_folder,"map\setup_scenarios")
+        map_path = os.path.join(map_folder_path,"mega.txt")
+        self.create_path_if_doesnt_exist(map_folder_path)
+        with open(map_path,"w",encoding="utf-8") as file:
             file.write(result)
 
+    def copy_blank_mod(self):
+        blank_mod_path = "blankMod"
+        if(os.path.exists(self.mod_folder)):
+            shutil.rmtree(self.mod_folder)
+        shutil.copytree(blank_mod_path,self.mod_folder)
+
+    def create_descriptor_file(self):
+        template = f"""version="3"
+tags={{
+	"Balance"
+}}
+name="{self.mod_name}"
+supported_version="3.3.4"
+        """
+        with(open(os.path.join(self.mod_folder,"descriptor.mod"),"w",encoding="utf-8")) as descriptor:
+            descriptor.write(template)
+    
+    def create_outside_descriptor_file(self):
+        template = f"""version="3"
+tags={{
+	"Balance"
+}}
+name="{self.mod_name}"
+supported_version="3.3.4"
+path="mod/{self.mod_folder_name}"
+        """
+
+        with(open(os.path.join("output",self.mod_folder_name+".mod"),"w",encoding="utf-8")) as descriptor:
+            descriptor.write(template)
 
     def create_mod(self):
-        print("Starting")
+        print("Initializing files")
+        self.copy_blank_mod()
+        self.create_descriptor_file()
+        self.create_outside_descriptor_file()
+        print("Writing system initializers")
         self.write_initializers()
         print("Writing maps")
         self.write_map()
