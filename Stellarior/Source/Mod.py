@@ -3,6 +3,7 @@ from Planet import Planet
 from System import System
 import os
 import shutil
+import logging
 
 class Mod:
 
@@ -146,11 +147,15 @@ path="mod/{self.mod_folder_name}"
             descriptor.write(template)
 
     def create_mod(self):
-        print("Initializing files")
+        logging.info("Initializing files")
+        logging.progress("51%")
         self.copy_blank_mod()
         self.create_descriptor_file()
         self.create_outside_descriptor_file()
-        print("Writing system initializers")
+        logging.progress("55%")
+        logging.info("Writing system initializers")
         self.write_initializers()
-        print("Writing maps")
+        logging.progress("75%")
+        logging.info("Writing maps")
         self.write_map()
+        logging.progress("99%")

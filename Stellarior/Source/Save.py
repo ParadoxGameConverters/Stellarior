@@ -1,6 +1,7 @@
 import re
 from Planet import Planet
 from System import System
+import logging
 
 class Save:
     re_planet = R"[0-9]+={\n\t\t\tname={"
@@ -60,12 +61,13 @@ class Save:
             
 
     def get_planets(self):
-        print("Getting planets")
+        logging.info("Getting planets")
         result = []
         for planet_dictionary in self.get_planet_dictionaries():
             planet = Planet(planet_dictionary["id"],planet_dictionary["name"],planet_dictionary["planet_class"],planet_dictionary)
             result.append(planet)
-        print("Got planets")
+        logging.progress("25%")
+        logging.info("Got planets")
         return result            
 
     def set_planet_moons(self, planet_dictionary : list[Planet]):
@@ -110,7 +112,7 @@ class Save:
         return result
 
     def get_systems(self):
-        print("Getting systems")
+        logging.info("Getting systems")
         result = []
 
         planets = self.get_planets()
@@ -126,4 +128,6 @@ class Save:
                 system.planets.append(planet_dictionary[planet_id])
             result.append(system)
 
+        logging.progress("50%")
+        logging.info("Got systems")
         return result
