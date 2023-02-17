@@ -7,3 +7,5 @@ l_english:
  StellarisDOCTIP: "A path on your computer where Stellaris keeps temporary files"
  StellarisSAVE: "Path to the Stellaris savegame"
  StellarisSAVETIP: "Path to your savegame from Stellaris"
+ targetGameModPath: "Stellaris Mod Folder"
+ targetGameModPathTIP: "Path to the folder where Stellaris stores mods"

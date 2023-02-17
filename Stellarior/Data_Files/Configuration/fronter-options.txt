@@ -1,0 +1,11 @@
+option = {
+	name = output_name
+	displayName = OPTION8
+	tooltip = OPTION8TIP
+	outputtable = true
+	textSelector = {	
+		value = ""
+		editable = true
+		tooltip = OPTION8TEXTTIP
+	}
+}

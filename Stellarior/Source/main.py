@@ -24,11 +24,11 @@ if(__name__ == "__main__"):
         save_gamestate_text = save_loader.get_gamestate_text()
         documents_path = save_loader.get_configuration_documents_path()
         save = Save(save_gamestate_text)
-        save_name = save.get_save_name()
+        save_name = save_loader.get_out_mod_name()
         logging.info("Found save location")
         logging.progress("5%")
         logging.info("Preparing save information")
-        mod = Mod(documents_path,save_name,save.get_systems())
+        mod = Mod(save_name,save.get_systems())
         mod.create_mod()
     except Exception as e:
         logging.exception("Exception occurred")

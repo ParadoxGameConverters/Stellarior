@@ -7,25 +7,6 @@ import logging
 
 class Mod:
 
-    map_file_start = """static_galaxy_scenario = {
-	name = "megacampaign_galaxy"
-	priority = 7
-	default = no
-	num_empires = { min = 0 max = 16 }
-	num_empire_default = 5
-	fallen_empire_default = 1
-	fallen_empire_max = 3
-	marauder_empire_default = 1
-	marauder_empire_max = 2
-	advanced_empire_default = 0
-	colonizable_planet_odds = 1.0
-	random_hyperlanes = no
-	num_wormhole_pairs_default = 0
-	crisis_strength = 1.0
-	extra_crisis_strength = { 10 25 }
-    
-    """
-
     system_file_start = """@base_planet_dist = 30
 @base_moon_dist = 15
 
@@ -44,13 +25,30 @@ class Mod:
     
     """
 
-    def __init__(self, documents_path : str, save_name : str , systems : list[System]):
-        self.mods_path = os.path.join(documents_path,"mod")
-        self.mod_name = "Converted - "+save_name
+    def __init__(self, save_name : str , systems : list[System]):
+        self.mod_name = "Converted - " + save_name
         self.systems = systems
 
         self.mod_folder_name = save_name.replace(" ","_").lower()
         self.mod_folder = os.path.join("output",self.mod_folder_name)
+
+        self.map_file_start = "static_galaxy_scenario = {\n"+f"name = \"{save_name}\""+"""
+    priority = 7
+	default = no
+	num_empires = { min = 0 max = 16 }
+	num_empire_default = 5
+	fallen_empire_default = 1
+	fallen_empire_max = 3
+	marauder_empire_default = 1
+	marauder_empire_max = 2
+	advanced_empire_default = 0
+	colonizable_planet_odds = 1.0
+	random_hyperlanes = no
+	num_wormhole_pairs_default = 0
+	crisis_strength = 1.0
+	extra_crisis_strength = { 10 25 }
+    
+    """
        
     
     def get_planet_initalizer_body(self, planet : Planet):

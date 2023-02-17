@@ -28,6 +28,14 @@ requiredFolder = {
 	searchPathType = windowsUsersFolder
 	searchPath = "Paradox Interactive\Stellaris"
 }
+requiredFolder = {
+	name = targetGameModPath
+	displayName = targetGameModPath 
+	tooltip = targetGameModPathTIP
+	mandatory = true
+	searchPathType = windowsUsersFolder
+	searchPath = "Paradox Interactive\Stellaris\mod"
+}
 requiredFile = {
 	name = SaveGame
 	displayName = StellarisSAVE
