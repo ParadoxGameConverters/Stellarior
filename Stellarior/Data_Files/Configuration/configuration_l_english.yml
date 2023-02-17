@@ -1,0 +1,11 @@
+l_english:
+ StellarisDISPLAYNAME: "Stellaris"
+ StellarisGAME: "Stellaris"
+ StellarisFOLDER: "Stellaris Install Directory"
+ StellarisFOLDERTIP: "The path on your computer where Stellaris is installed"
+ StellarisDOC: "Stellaris Documents Directory"
+ StellarisDOCTIP: "A path on your computer where Stellaris keeps temporary files"
+ StellarisSAVE: "Path to the Stellaris savegame"
+ StellarisSAVETIP: "Path to your savegame from Stellaris"
+ targetGameModPath: "Stellaris Mod Folder"
+ targetGameModPathTIP: "Path to the folder where Stellaris stores mods"

@@ -1,0 +1,4 @@
+out/
+gamestate
+__pycache__/
+Release/
