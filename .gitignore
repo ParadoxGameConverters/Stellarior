@@ -2,3 +2,7 @@ out/
 gamestate
 __pycache__/
 Release/
+pyinstaller/
+build/
+dist/
+main.spec
