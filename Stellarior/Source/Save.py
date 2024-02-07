@@ -6,10 +6,10 @@ from Country import Country
 import logging
 
 class Save:
-    re_planet = R"[0-9]+={\n\t\t\tname={"
-    re_system = R"[0-9]+={\n\t\tcoordinate={"
-    re_country = R"[0-9]+={\n\t\tflag={"
-    re_species = R"[0-9]+={\n\t\t(?:.*\n\t\t){0,1}name_list="
+    re_planet = R"[0-9]+=\n\t*{\n\t\t\tname=\n\t*{"
+    re_system = R"[0-9]+=\n\t*{\n\t\tcoordinate=\n\t*{"
+    re_country = R"[0-9]+=\n\t*{\n\t\tflag=\n\t*{"
+    re_species = R"[0-9]+=\n\t*{\n\t\t(?:.*\n\t\t){0,1}name_list="
 
     def __init__(self, text):
         self.text = text
@@ -42,8 +42,8 @@ class Save:
     def get_planet_dictionaries(self):
         planet_finish_text = "auto_slots_taken"
         result = []
-        start_planets = self.text.find("\nplanets={\n")
-        end_planets = self.text.find("\ncountry={\n")
+        start_planets = self.text.find("\nplanets=\n{\n")
+        end_planets = self.text.find("\ncountry=\n{\n")
         shorter_text = self.text[:end_planets]
         for planet_start in self.get_starts(self.re_planet,start_planets,end_planets):
             start = shorter_text.find(planet_start)
@@ -69,7 +69,7 @@ class Save:
             planet = Planet(planet_dictionary["id"],planet_dictionary["name"],planet_dictionary["planet_class"],planet_dictionary)
             result.append(planet)
         logging.progress("25%")
-        logging.info("Got planets")
+        logging.info(f"Got {len(result)} planets")
         return result            
 
     def set_planet_moons(self, planet_dictionary : list[Planet]):
@@ -84,8 +84,8 @@ class Save:
 
     def get_system_dictionaries(self):
         system_finish_text = "sector"
-        system_starting_point = self.text.find("galactic_object={")
-        system_ending_point = self.text.find("\nambient_object={")
+        system_starting_point = self.text.find("galactic_object=\n{")
+        system_ending_point = self.text.find("\nambient_object=\n{")
         result = []
         shorter_text = self.text[:system_ending_point]
         for system_start in self.get_starts(self.re_system,system_starting_point,system_ending_point):
@@ -128,11 +128,14 @@ class Save:
         for system_dictionary in self.get_system_dictionaries():
             system = System(system_dictionary["id"],system_dictionary["name"],system_dictionary["star_class"],system_dictionary)
             for planet_id in system_dictionary["planet"]:
-                system.planets.append(planet_dictionary[planet_id])
+                if(planet_id in planet_dictionary):
+                    system.planets.append(planet_dictionary[planet_id])
+                else:
+                    logging.error(f"No planet with id: {planet_id} found! Ignoring")
             result.append(system)
 
         logging.progress("50%")
-        logging.info("Got systems")
+        logging.info(f"Got {len(result)} systems")
         return result
 
     def get_species_dictionaries(self):
