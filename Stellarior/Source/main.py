@@ -28,7 +28,7 @@ if(__name__ == "__main__"):
         logging.info("Found save location")
         logging.progress("5%")
         logging.info("Preparing save information")
-        mod = Mod(save_name,save.get_systems())
+        mod = Mod(save_name,save.get_systems(),save.get_countries(),save.get_species())
         mod.create_mod()
     except Exception as e:
         logging.exception("Exception occurred")
