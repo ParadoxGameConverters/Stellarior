@@ -9,7 +9,7 @@ jobs:
     steps:
     
       # Check-out repository
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       # Setup Python
       - uses: actions/setup-python@v5
